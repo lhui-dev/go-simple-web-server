@@ -1,7 +1,57 @@
 package main
 
-import "fmt"
+import (
+	"context"
+	"errors"
+	"fmt"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/leedev/go-simple-web-server/internal/configuration"
+	"github.com/leedev/go-simple-web-server/internal/pkg/log"
+	"github.com/leedev/go-simple-web-server/router"
+)
+
+// 加载日志log
+var _log = log.Log()
 
 func main() {
-	fmt.Println("init project..")
+
+	gin.SetMode(configuration.Config.Server.Mode)
+	// fmt.Println("configuration information: ", configuration.Config)
+
+	// 初始化路由
+	_router := router.InitRouter()
+
+	// 服务器地址 host:port
+	addr := fmt.Sprintf("%s:%s", configuration.Config.Server.Host, configuration.Config.Server.Port)
+	srv := &http.Server{
+		Addr:    addr,
+		Handler: _router,
+	}
+
+	// @see detail at : https://gin-gonic.com/docs/examples/graceful-restart-or-stop/
+	go func() {
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			_log.Fatalf("Listen at: %s", err)
+		}
+	}()
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
+	_log.Info("Shutdown server...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		_log.Fatalf("Shutdown server: %v\n", err)
+	}
+	select {
+	case <-ctx.Done():
+		_log.Println("Timeout of 3 seconds.")
+	}
+	_log.Println("Server exiting...")
 }

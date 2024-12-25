@@ -1,0 +1,38 @@
+# 项目启动端口
+server:
+  host: '127.0.0.1'
+  port: '9999'
+  mode: 'debug'
+
+
+# 数据库配置
+db:
+  # redis
+  redis:
+    host: '127.0.0.1'
+    port: '6379'
+    password:
+    database: 0
+  # mysql
+  mysql:
+    host: 'localhost'
+    port: '3306'
+    username: 'root'    # 替换数据库用户名
+    password: '123456'  # 替换数据库密码
+    database: 'dbName'  # 替换数据可名称
+    charset: 'utf8'     # 字符集
+    maxIdle: 50         # 最大空闲数
+    maxOpen: 150        # 最大连接数
+  # mongodb
+  mongodb:
+    host: 'localhost'
+    port: ''
+    username: ''
+    password: ''
+    database:
+
+# 日志配置
+log:
+  path: './log'    # 路径
+  fileName: 'SysLog'   # 文件名
+  mode: console   # 输出到控制台console  输出到文件file
