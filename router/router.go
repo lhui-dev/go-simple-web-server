@@ -5,15 +5,18 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/leedev/go-simple-web-server/api/controller"
+	"github.com/leedev/go-simple-web-server/api/dao"
+	"github.com/leedev/go-simple-web-server/api/service"
 	"github.com/leedev/go-simple-web-server/internal/middleware"
-	"net/http"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // InitRouter 初始化路由信息
 func InitRouter() *gin.Engine {
 	router := gin.New()
-
-	router.LoadHTMLGlob("color.html")
 
 	// 宕机恢复
 	router.Use(gin.Recovery())
@@ -22,11 +25,37 @@ func InitRouter() *gin.Engine {
 	// 跨域中间件
 	router.Use(middleware.Cors())
 
-	router.GET("/", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "color.html", gin.H{
-			"color": "red",
-		})
-	})
+	// dao
+	userDao := dao.NewUserDaoImpl()
 
+	// service
+	userService := service.NewUserServiceImpl(userDao)
+
+	// controller
+	userController := controller.NewUserController(userService)
+
+	// 注册路由
+	registerRoute(router, userController)
+	// 返回路由信息
 	return router
+}
+
+// 注册路由信息
+func registerRoute(
+	router *gin.Engine,
+	userController *controller.UserController,
+) {
+
+	// swagger doc router
+	// --> /swagger/index.html
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	baseRoutes := router.Group("/api/v1")
+	{
+		// 用户相关路由信息
+		userRoutes := baseRoutes.Group("/user")
+		{
+			userRoutes.GET("/list", userController.QueryUserList)
+		}
+	}
 }

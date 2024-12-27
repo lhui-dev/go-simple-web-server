@@ -1,0 +1,44 @@
+basePath: /api/v1
+definitions:
+  result.Result:
+    properties:
+      code:
+        description: 状态码
+        type: integer
+      data:
+        description: 返回的数据
+      message:
+        description: 提示信息
+        type: string
+    type: object
+host: localhost:9999
+info:
+  contact:
+    email: lee.dev@gmail.com
+    name: Lee
+    url: http://www.swagger.io/support
+  description: web服务API接口文档
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: web服务接口文档
+  version: "1.0"
+paths:
+  /user/list:
+    get:
+      description: 查询用户列表信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/result.Result'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/result.Result'
+      summary: 查询用户列表接口
+      tags:
+      - User
+swagger: "2.0"

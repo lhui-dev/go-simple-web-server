@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/leedev/go-simple-web-server/docs"
 	"github.com/leedev/go-simple-web-server/internal/configuration"
 	"github.com/leedev/go-simple-web-server/internal/pkg/log"
 	"github.com/leedev/go-simple-web-server/router"
@@ -18,6 +19,19 @@ import (
 // 加载日志log
 var _log = log.Log()
 
+// @title web服务接口文档
+// @version 1.0
+// @description web服务API接口文档
+
+// @contact.name	Lee
+// @contact.url	http://www.swagger.io/support
+// @contact.email	lee.dev@gmail.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:9999
+// @BasePath  /api/v1
 func main() {
 
 	gin.SetMode(configuration.Config.Server.Mode)
