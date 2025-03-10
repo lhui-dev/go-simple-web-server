@@ -13,6 +13,7 @@ import (
 	_ "github.com/leedev/go-simple-web-server/docs"
 	"github.com/leedev/go-simple-web-server/internal/configuration"
 	"github.com/leedev/go-simple-web-server/internal/pkg/log"
+	"github.com/leedev/go-simple-web-server/internal/pkg/redis"
 	"github.com/leedev/go-simple-web-server/router"
 )
 
@@ -68,4 +69,17 @@ func main() {
 		_log.Println("Timeout of 3 seconds.")
 	}
 	_log.Println("Server exiting...")
+}
+
+// 初始化连接信息
+func init() {
+	// init mysql
+	//if err := mysql_db.SetupMysqlDbLink(); err != nil {
+	//	_log.Error(err)
+	//}
+
+	// init redis
+	if err := redis.SetupRedisLink(); err != nil {
+		_log.Error(err)
+	}
 }

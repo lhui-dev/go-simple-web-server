@@ -33,19 +33,19 @@ type redisConfig struct {
 	Host     string `yaml:"host"`
 	Port     string `yaml:"port"`
 	Password string `yaml:"password"`
-	Database string `yaml:"database"`
+	Database int    `yaml:"database"`
 }
 
 // mysql相关配置
 type mysqlConfig struct {
 	Host     string `yaml:"host"`
-	Port     string `yaml:"port"`
+	Port     int    `yaml:"port"`
 	Username string `yaml:"username"`
 	Password string `yaml:"password"`
 	Database string `yaml:"database"`
 	Charset  string `yaml:"charset"`
-	MaxIdle  uint   `yaml:"maxIdle"`
-	MaxOpen  uint   `yaml:"maxOpen"`
+	MaxIdle  int    `yaml:"maxIdle"`
+	MaxOpen  int    `yaml:"maxOpen"`
 }
 
 // mongodb相关配置

@@ -16,10 +16,10 @@ db:
   # mysql
   mysql:
     host: 'localhost'
-    port: '3306'
+    port: 3306
     username: 'root'    # 替换数据库用户名
     password: '123456'  # 替换数据库密码
-    database: 'dbName'  # 替换数据可名称
+    database: 'dbName'  # 使用时，替换数据库名称
     charset: 'utf8'     # 字符集
     maxIdle: 50         # 最大空闲数
     maxOpen: 150        # 最大连接数
